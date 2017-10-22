@@ -1,5 +1,15 @@
 import tensorflow as tf 
 
+###################################################################################
+##
+## Neural networks are defined for 
+##    policy
+##    value
+##    Q-Network
+##  TODO: Add more details about why 
+##
+###################################################################################
+
 def policy_nn(state, state_dim, action_dim, initializer):
 	w1 = tf.get_variable('W1', [state_dim, 512], initializer = initializer, regularizer=tf.contrib.layers.l2_regularizer(0.01))
 	b1 = tf.get_variable('b1', [512], initializer = tf.constant_initializer(0.0))

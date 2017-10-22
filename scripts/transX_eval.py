@@ -2,6 +2,13 @@
 
 import sys
 import numpy as np
+####################################################################
+##
+## Refer to github repos for more details
+## https://github.com/thunlp/TensorFlow-TransX
+## https://github.com/thunlp/Fast-TransX
+##
+####################################################################
 
 relation = sys.argv[1]
 

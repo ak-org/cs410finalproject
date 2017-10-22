@@ -6,6 +6,13 @@ import numpy as np
 from BFS.KB import KB
 from BFS.BFS import BFS
 
+######################################################################
+##
+## Utility functions used in other files
+## Need to confirm - if any of the functions will change?
+##
+#####################################################################
+
 # hyperparameters
 state_dim = 200
 action_space = 400

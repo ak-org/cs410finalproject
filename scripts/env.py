@@ -2,6 +2,20 @@ import numpy as np
 import random
 from utils import *
 
+##########################################################################
+##  In reinforcement learning, there is an agent - who interacts with 
+##  a given Environment. Environment accepts current and future step and
+##  returns reward value back to the agent
+##
+##  Env is defined as class containing following methods
+##  -- Initialize init()
+##  -- interact()
+##  -- idx_state()
+##  -- get_valid_actions()
+##  -- path_embedding
+##  -- TODO : Add description for these methods - what is their purpose?
+##
+#########################################################################
 class Env(object):
 	"""knowledge graph environment definition"""
 	def __init__(self, dataPath, task=None):

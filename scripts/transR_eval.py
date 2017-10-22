@@ -2,6 +2,23 @@ import cPickle
 import sys
 import numpy as np
 
+############################################################################
+## models such as TransE and TransH build entity and re-lation embeddings 
+## by regarding a relation as translation from head entity to tail entity. 
+#$ Authors below note that these model- s simply put both entities and relations 
+## within the same semantic space. In fact, an entity may have multiple aspects and 
+## various relations may focus on different as- pects of entities, which makes a common 
+## space insufficient for modeling. 
+## In this paper, they propose TransR to build entity and relation embeddings in separate 
+## entity space and relation spaces.
+##
+## Link to the paper
+## http://nlp.csai.tsinghua.edu.cn/%7Elzy/publications/aaai2015_transr.pdf
+##
+##
+##
+############################################################################
+
 relation = sys.argv[1]
 
 dataPath_ = '../NELL-995/tasks/'  + relation

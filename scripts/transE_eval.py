@@ -2,6 +2,21 @@ import cPickle
 import sys
 import numpy as np
 
+############################################################################
+## TransE was proposed by Bordersan Et.al as a way to model relationships
+## by interpreting them as a translation operating on the low dimensional
+## embeddings of the entities
+##
+## Link to the paper 
+## https://papers.nips.cc/paper/5071-translating-embeddings-for-modeling-multi-relational-data.pdf
+## 
+##
+## Since TransE has issues when modeling 1-to-N, N- to-1 and N-to-N relations,
+## TransH is proposed to enable an entity having different representations when involved in var- ious relations.
+## https://pdfs.semanticscholar.org/2a3f/862199883ceff5e3c74126f0c80770653e05.pdf
+##
+############################################################################
+
 relation = sys.argv[1]
 
 dataPath_ = '../NELL-995/tasks/'  + relation
