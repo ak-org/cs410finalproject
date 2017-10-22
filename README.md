@@ -1,3 +1,9 @@
+# Final Project for CS410, MCS-DS Program at UIUC
+## Team Members : Aruna N, Ashish K, Abhisek J
+## Project Advisor : Ismini 
+## Original authors of the code cited below
+
+
 # Deep Reinforcement Learning for Knowledge Graph Reasoning
 We study the problem of learning to reason in large scale knowledge graphs (KGs). More specifically, we describe a novel reinforcement learning framework for learning multi-hop relational paths: we use a policy-based agent with continuous states based on knowledge graph embeddings, which reasons in a KG vector-space by sampling the most promising relation to extend its path. In contrast to prior work, our approach includes a reward function that takes the **accuravy**, **diversity**, and **efficiency** into consideration. Experimentally, we show that our proposed method outperforms a path-ranking based algorithm and knowledge graph embedding methods on Freebase and Never-Ending Language Learning datasets.
 
