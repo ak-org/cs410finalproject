@@ -14,7 +14,7 @@ import time
 ###############################################################################
 ##
 ## TODO: Add description
-## Primary script that processes that creates and saves the model.
+## Primary script that processes the data files, creates and saves the model.
 ##
 ###############################################################################
 
