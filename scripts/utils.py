@@ -26,7 +26,7 @@ from BFS.BFS import BFS
 ##
 ## path_clean()
 ##	Used during reinforcement and testing phases
-##	<<INCOMPLETE>>
+##
 ##
 ## prob_norm()
 ##
