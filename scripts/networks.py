@@ -1,14 +1,14 @@
 import tensorflow as tf 
 
-###################################################################################
+###################################################################################################
 ##
 ## Neural networks are defined for 
-##    policy
-##    value
-##    Q-Network
-##  TODO: Add more details about why 
+##	policy_nn: The neural network consists of two hidden layers, each followed by a rectifier
+## 		non-linearity layer (ReLU). The output layer is normalized using a softmax function
+##	value_nn -- This neural network is defined but not used anywhere.
+##	q_network -- This neural network is defined but not used anywhere.
 ##
-###################################################################################
+###################################################################################################
 
 def policy_nn(state, state_dim, action_dim, initializer):
 	w1 = tf.get_variable('W1', [state_dim, 512], initializer = initializer, regularizer=tf.contrib.layers.l2_regularizer(0.01))
