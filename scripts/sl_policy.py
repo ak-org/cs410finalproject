@@ -11,12 +11,34 @@ from BFS.KB import KB
 from BFS.BFS import BFS
 import time
 
-###############################################################################
+###############################################################################################
 ##
-## TODO: Add description
-## Primary script that processes the data files, creates and saves the model.
+## Main script for training.
+##	Initializes SupervisedPolicy object with tensors for the following
+## 	Neural network initialized with a learning rate of 0.001
+## 		init()
+## 			action
+##			action_prob: Softmax
+##			loss
+##			optimizer: AdamOptimizer
+##			action_picked_prob
+##			state
+##			train_op: Training operation name: supervised_policy/Adam
+##		predict()
 ##
-###############################################################################
+##		update()
+##			store the state, action in the neural network
+## 	train()
+##		Initializes the SupervisedPolicy object, creates a tf session and starts
+## 		processing the train_pos file. num_episodes initialized to number of lines in train_pos
+##		or set to a max of 500 (whichever is greater). Process each line of train_pos and
+##		stores the good_episodes (namedtuple called Transition) with reward=1, updates the NN
+##		with the state and state from the namedtuple.  Finally saves the model
+##
+##	test()
+## 		Most likely not used.
+##
+###############################################################################################
 
 relation = sys.argv[1]
 # episodes = int(sys.argv[2])
