@@ -30,7 +30,7 @@ from utils import *
 ##          state: is [current_position, target_position]
 ##		    action: an integer
 ##          return: (reward, [new_postion, target_position], done)
-##
+## 
 ##  -- idx_state()
 ##          takes as input current or next_state
 ##          returns the current and (target-current) positions
