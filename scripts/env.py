@@ -2,20 +2,52 @@ import numpy as np
 import random
 from utils import *
 
-##########################################################################
+###############################################################################################################
 ##  In reinforcement learning, there is an agent - who interacts with 
 ##  a given Environment. Environment accepts current and future step and
 ##  returns reward value back to the agent
 ##
+##  Env object has the following instance variables
+##          -- entity2id_ a dictionary populated from entity2id.txt file
+##          -- relation2id_ a dictionary populated from relation2id.txt file
+##          -- relations a vector populated from the relations in relation2id.txt file
+##          -- entity2vec populated from entity2vec.bern file
+##          -- relation2vec populated from relation2vec.bern file
+##          -- kb knowledge graph for path finding. This stores all relations from
+##                  kb_env_rl.txt expect one corresponding to input task and its inverse.
+##                  Relation from state to A->B as R and the relation from B->A as R_inverse
+##          -- die number of times the agent chose the wrong path
+##
 ##  Env is defined as class containing following methods
 ##  -- Initialize init()
-##  -- interact()
-##  -- idx_state()
-##  -- get_valid_actions()
-##  -- path_embedding
-##  -- TODO : Add description for these methods - what is their purpose?
+##          Reads the entity2id.txt and relation2id.txt files and populates the 2 dictionaries self.entity2id_
+##          and self.relation2id_variables, stores the relations from relation2id.txt in self.relation,
+##          populates entity2vec and relation2vec from corresponding .bern files. Populates the kb object with
+##          relations (corresponding to input task) from kb_env_rl.txt. Sets variable die to 0.
 ##
-#########################################################################
+##  -- interact()
+##          Called during testing and reinforcement phases
+##          state: is [current_position, target_position]
+##		    action: an integer
+##          return: (reward, [new_postion, target_position], done)
+##
+##  -- idx_state()
+##          takes as input current or next_state
+##          returns the current and (target-current) positions
+##
+##  -- get_valid_actions()
+##          takes the entity id as input
+##          Returns set of valid actions for a given state from self.kb which contains triples
+##          of the form (A, B, R).
+##
+##  -- path_embedding
+##          Called during testing phase
+##
+##
+##
+##
+############################################################################################################
+
 class Env(object):
 	"""knowledge graph environment definition"""
 	def __init__(self, dataPath, task=None):
