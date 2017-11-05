@@ -6,12 +6,33 @@ import numpy as np
 from BFS.KB import KB
 from BFS.BFS import BFS
 
-######################################################################
+###################################################################################################################
 ##
 ## Utility functions used in other files
-## Need to confirm - if any of the functions will change?
+## distance()
+##	Not used
 ##
-#####################################################################
+## compare()
+##	Not used
+##
+## teacher() - Takes e1 and e2 as input. Uses BFS search to find 5 intermediate paths between e1 and e2
+##	Read graph.txt for the task and populate kb.relation object with ent1,ent2,R for every line from graph.txt
+##	finds paths between e1,intermediate and intermediate and e2. Walk the list and append successful finds.
+##	Sort the list and remove duplicates. Use the entity and relation to id mapping dictionary in the env object and
+##	store the id for current, next and relations. return vector of good_episodes with the entity ids of current,
+## 	next and relation. current_state stored as (curr_id, target_id), next_state as (next_id, target_id)
+##	relation_id stored from env.relation2id vector, reward = 1.
+##	Return: good_episodes  a namedtuple called Transition(state, action, next_state, reward)
+##
+## path_clean()
+##	Used during reinforcement and testing phases
+##
+##
+## prob_norm()
+##
+##
+##
+####################################################################################################################
 
 # hyperparameters
 state_dim = 200
