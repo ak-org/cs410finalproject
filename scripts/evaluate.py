@@ -7,6 +7,42 @@ from sklearn import linear_model
 from keras.models import Sequential 
 from keras.layers import Dense, Activation
 
+####################################################################################################
+##
+## Called by link_prediction_eval script for a particular task
+##
+## 	evaluate_logic()
+## 		Populates KB object from graph.txt, store relation (e1,e2,r) and relation_inv (e2, e1, r_inv)
+##		populates model object
+##		Calls get_features() to get list of pathnames and pathids
+##		Calls train() to get a keras sequential model
+##		<<INCOMPLETE HERE >>
+##
+##
+##
+##
+##	train()
+##		Loads the path_to_use.txt, path_stats for the particular task and the relation2id file
+##		Initializes a keras sequential model object.
+##			optimizer is defined for a binary classification problem with optimizer as rmsprop
+##			loss function as binary_crossentropy and with metrics set to accuracy for judging
+##			performance of model
+##			Uses Bidrectional search to populate the training features
+##
+##
+##	get_features()
+##		populate path_statistics for the task from path_stats.txt
+##		populate paths for the task from path_to_use.txt. split paths into relations
+##		convert relations to relation_ids using mapping in relation2id.txt
+##		For each path return the relation as pathName and id (from relation2id.txt) relation_id
+##
+##	bfs_two()
+##		Bidirectional search for path verification.  Algorithm pseudo code in the paper.
+##		Verify if (e1,e2,r) and (e2, e1, r_inv)
+##
+##
+####################################################################################################
+
 relation = sys.argv[1]
 
 dataPath_ = '../NELL-995/tasks/'  + relation
