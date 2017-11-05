@@ -11,7 +11,7 @@ from networks import policy_nn, value_nn
 from utils import *
 from env import Env
 
-#############################################################################################################
+###################################################################################################################
 ##
 ## Main script for retraining and testing phases. The SupervisedPolicyNetwork created during the training
 ## phase is retrained here. For each relation, the reasoning with one entity pair is treated as one episode.
@@ -57,10 +57,12 @@ from env import Env
 ##		get state_vector from env.idx_state(state_idx); call model.predict with these entity ids
 ##		call env.interact() to determine target from current position and update the Transitions named tuple.
 ##		if done==1 call it a success or if the max_steps have reached, the end episode.
+##		When a match is found, call env.path_embeddings for path_found_embedding & curr_path_embedding
+## 		determine cosine similarity between these two and compute diverse_reward.
 ##		Calculate success % and store successful paths in path_to_use.txt
 ##
 ##
-#######################################################################################################
+#####################################################################################################################
 
 
 relation = sys.argv[1]
