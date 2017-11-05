@@ -11,14 +11,56 @@ from networks import policy_nn, value_nn
 from utils import *
 from env import Env
 
-###############################################################################
+#############################################################################################################
+##
+## Main script for retraining and testing phases. The SupervisedPolicyNetwork created during the training
+## phase is retrained here. For each relation, the reasoning with one entity pair is treated as one episode.
+## Starting with the source node, the agent picks a relation according to the stochastic policy to extend its
+## reasoning path. This relation link may lead to a new entity, or it may lead to nothing. These failed steps
+## will cause the agent to receive negative rewards. The agent will stay at the same state after these failed
+## steps. Since the agent is following a stochastic policy, the agent will not get stuck by repeating a wrong
+## step. Number of steps is capped at max_steps (defaulted to 50). The gradient for the policy network is
+## updated after every episode.
+##
+## Initializes PolicyNetwork object
+##	init() - initializes the PolicyNetwork object with the following tensors
+##		-state
+##		-action
+##		-action_prob
+##		-action_mask
+##		-target
+##		-picked_action_prob
+##		-optimizer : Adam Optimizer with L2 Regularization
+##
+##	REINFORCE()
+##		global_reward=-0.5 for failure (and not 1/length(path) as documented in paper) and +1 for success
+##		if agent succeeds run through an optimization, set global_reward=1 and update neural network
+##			length_reward =1/len(path); total_reward = 0.1*global_reward + 0.9*length_reward
+##		if agent fails set global_reward=-0.5; Update the neural network with the failed step and
+## 			run through a call for teacher() to update the good_episodes and update the neural network again.
 ##
 ##
-## TODO: Add description
+##		Save 300 episodes from the retrained model
+##		the algorithm stops when done=1 or when the number of intermediate steps reaches max_steps (50)
+##		Successful paths are stored in path_stats.txt which is used during link prediction (in evaluate.py)
 ##
 ##
-###############################################################################
-
+##	retrain()
+##		Load the training_pairs from train_pos file
+##		Load the supervised learning policy from file models/policy_supervised_<relation>
+##		Call REINFORCE for each training_pair on the policy network
+##		Save the tf session as a retrained model in models/policy_retrained<relation>
+##
+##	test()
+##		Restore the tf session from the retrained model in models/policy_retrained<relation>
+##		Load the training_pairs from train_pos file, map each entity to corresponding entity_id - state_idx
+##		get state_vector from env.idx_state(state_idx); call model.predict with these entity ids
+##		call env.interact() to determine target from current position and update the Transitions named tuple.
+##		if done==1 call it a success or if the max_steps have reached, the end episode.
+##		Calculate success % and store successful paths in path_to_use.txt
+##
+##
+#######################################################################################################
 
 
 relation = sys.argv[1]
