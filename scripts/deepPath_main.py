@@ -121,7 +121,7 @@ def main():
     environment = DPEnv(graphPath, relationPath)
 
     ## define runner
-
+    ## uncomment once the agent,network and env details are hashed out
     """
     runner = Runner(agent=agent,
                     environment = environment,
