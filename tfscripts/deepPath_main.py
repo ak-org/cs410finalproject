@@ -16,7 +16,7 @@ import time
 import numpy as np
 import tensorforce
 
-from env import Env  # this is the original DeepPath Env class
+from Tforcedp import DPEnv  
 from utils import *
 ## import necessary tensorflow classes
 
