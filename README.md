@@ -16,7 +16,7 @@ tfscripts/ folder
 ## Access the dataset
 Download the knowledge graph dataset [NELL-995](http://cs.ucsb.edu/~xwhan/datasets/NELL-995.zip)
 
-## How to run over code
+## How to run our code
 1. unzip the data, put the data folder in the top level code directory
 2. run the following script within `tfscripts/`
    * ` python deepPath_main.py -r <relation_name>`
