@@ -1,6 +1,5 @@
 import numpy as np
 
-from env import Env
 from utils import *
 import numpy as np
 import random
