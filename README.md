@@ -7,10 +7,21 @@
 # Deep Reinforcement Learning for Knowledge Graph Reasoning
 We study the problem of learning to reason in large scale knowledge graphs (KGs). More specifically, we describe a novel reinforcement learning framework for learning multi-hop relational paths: we use a policy-based agent with continuous states based on knowledge graph embeddings, which reasons in a KG vector-space by sampling the most promising relation to extend its path. In contrast to prior work, our approach includes a reward function that takes the **accuravy**, **diversity**, and **efficiency** into consideration. Experimentally, we show that our proposed method outperforms a path-ranking based algorithm and knowledge graph embedding methods on Freebase and Never-Ending Language Learning datasets.
 
+## original code
+scripts/ folder
+
+## our code 
+tfscripts/ folder
+
 ## Access the dataset
 Download the knowledge graph dataset [NELL-995](http://cs.ucsb.edu/~xwhan/datasets/NELL-995.zip)
 
-## How to run our code 
+## How to run over code
+   * ` python deepPath_main.py -r <relation_name>`
+   Example
+   * ` python deepPath_main.py -r concept_athletehomestadium`
+   
+## How to run original code 
 1. unzip the data, put the data folder in the code directory
 2. run the following scripts within `scripts/`
     *   `./pathfinder.sh ${relation_name}`  # find the reasoning paths, this is RL training, it might take sometime
