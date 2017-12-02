@@ -61,8 +61,8 @@ def main():
 
     step_optimizer = dict(type='adam',learning_rate=1e-3)
 
-    agent = VPGAgent(states_spec=dict(shape=(1, 200), type='float'),
-                     actions_spec=dict(type='int', num_actions=400),
+    agent = VPGAgent(states_spec=dict(shape=(1, state_dim), type='float'),
+                     actions_spec=dict(num_actions=action_space, type='int'),
                      network_spec=network_spec, optimizer=step_optimizer,
                      discount=0.99, batch_size=1000)
 
