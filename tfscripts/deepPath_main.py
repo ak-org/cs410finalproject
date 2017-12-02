@@ -52,19 +52,21 @@ def main():
     environment = DPEnv(graphPath, relationPath)
 
     network_spec = [
-        ## need more clarification
         dict(type='dense', size=512, activation='relu'),
-        dict(type='dense', size=1024, activation='relu'),
-        dict(type='dense', size=state_dim, activation='softmax'),
-
+        dict(type='dense', size=1024, activation='relu')
     ]
 
-    step_optimizer = dict(type='adam',learning_rate=1e-3)
+    step_optimizer = dict(type='adam', learning_rate=1e-3)
 
     agent = VPGAgent(states_spec=dict(shape=(1, state_dim), type='float'),
                      actions_spec=dict(num_actions=action_space, type='int'),
                      network_spec=network_spec, optimizer=step_optimizer,
                      discount=0.99, batch_size=1000)
+    
+    # agent = DQNAgent(states_spec=dict(shape=(1, state_dim), type='float'),
+    #                  actions_spec=dict(num_actions=action_space, type='int'),
+    #                  network_spec=network_spec, optimizer=step_optimizer,
+    #                  discount=0.99, batch_size=1000)
 
     runner = Runner(agent=agent, environment=environment)
 
