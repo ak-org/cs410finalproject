@@ -1,5 +1,6 @@
 import numpy as np
 
+from env import Env
 from utils import *
 import numpy as np
 import random
@@ -75,7 +76,7 @@ class DPEnv(Environment):
         This function process the interact from the agent
         state: is [current_position, target_position]
         action: an integer
-        return: (reward, [new_postion, target_position], done)
+        return: ([new_postion, target_position], reward, done)
         '''
         done = 0  # Whether the episode has finished
         curr_pos = state[0]
@@ -93,7 +94,7 @@ class DPEnv(Environment):
             self.die += 1
             next_state = state  # stay in the initial state
             next_state[-1] = self.die
-            return (reward, next_state, done)
+            return (next_state, reward, done)
         else:  # find a valid step
             path = random.choice(choices)
             self.path.append(path[2] + ' -> ' + path[1])
@@ -110,16 +111,16 @@ class DPEnv(Environment):
                 done = 1
                 reward = 0
                 new_state = None
-            return (reward, new_state, done)
+            return (new_state, reward, done)
 
     def states(self, idx_list=None):
         if idx_list != None:
             curr = self.entity2vec[idx_list[0], :]
             targ = self.entity2vec[idx_list[1], :]
             # return (np.expand_dims(np.concatenate((curr, targ - curr)),axis=0)
-            return dict(shape=(1, 512), type='float')
+            return dict(shape=(1, state_dim), type='float')
         else:
-            return dict(shape=(1, 512), type='float')
+            return dict(shape=(), type='float')
 
     def actions(self, entityID=0):
         actions = set()
@@ -129,4 +130,4 @@ class DPEnv(Environment):
             if e1_idx == entityID:
                 actions.add(self.relation2id_[triple[2]])
                 # return np.array(list(actions))
-        return dict(shape=(1, 512), type='int', num_actions=3)
+        return dict(shape=400, type='int', num_actions=action_space)
