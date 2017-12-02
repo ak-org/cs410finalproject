@@ -59,16 +59,14 @@ def main():
 
     ]
 
-    step_optimizer = dict(
-        type='adam',
-        learning_rate=1e-3)
+    step_optimizer = dict(type='adam',learning_rate=1e-3)
 
-    agent = VPGAgent(states_spec=dict(shape=(1,)), actions_spec=dict(type='int', num_actions=2),
+    agent = VPGAgent(states_spec=dict(shape=(1, 200), type='float'),
+                     actions_spec=dict(type='int', num_actions=400),
                      network_spec=network_spec, optimizer=step_optimizer,
                      discount=0.99, batch_size=1000)
 
-    runner = Runner(agent=agent,
-                    environment=environment)
+    runner = Runner(agent=agent, environment=environment)
 
     report_episodes = args.episodes / 50  # default episodes = 500
 
