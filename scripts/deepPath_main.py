@@ -50,9 +50,15 @@ def main():
 
     graphPath = dataPath + 'tasks/' + relation + '/' + 'graph.txt'
     relationPath = dataPath + 'tasks/' + relation + '/' + 'train_pos'
+    f = open(relationPath)
+    data = f.readlines()
+    f.close()
+
+    num_samples = len(data)
+
 
     ## initialize the DeePath Environment class
-    environment = DPEnv(graphPath, relationPath)
+    environment = DPEnv(graphPath, relationPath, task=data)
 
     network_spec = [
         dict(type='dense', size=512, activation='relu'),
