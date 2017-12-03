@@ -78,7 +78,7 @@ class DPEnv(Environment):
         action: an integer
         return: ([new_postion, target_position], reward, done)
         '''
-        done = 0  # Whether the episode has finished
+        done = 0  # also referred to as terminal variable in the tensorforce library
         curr_pos = state[0]
         target_pos = state[1]
         chosed_relation = self.relations[action]
