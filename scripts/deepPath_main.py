@@ -79,21 +79,21 @@ def main():
 
     runner = Runner(agent=agent, environment=environment)
 
-    report_episodes = args.episodes / 50  # default episodes = 500
+    report_episodes = args.episodes / 500  # default episodes = 500
 
     def episode_finished(r):
-        #if r.episode % report_episodes == 0:
-            # sps = r.total_timesteps / (time.time() - r.start_time)
-            # logger.info(
-            #     "Finished episode {ep} after {ts} timesteps. Steps Per Second {sps}".format(ep=r.episode, ts=r.timestep,
-            #                                                                                 sps=sps))
-            # logger.info("Episode reward: {}".format(r.episode_rewards[-1]))
-            # logger.info("Average of last 50 rewards: {}".format(sum(r.episode_rewards[-50:]) / 50))
-            # logger.info("Average of last 100 rewards: {}".format(sum(r.episode_rewards[-100:]) / 100))
+        if r.episode % report_episodes == 0:
+            sps = r.total_timesteps / (time.time() - r.start_time)
+            print(
+                "Finished episode {ep} after {ts} timesteps. Steps Per Second {sps}".format(ep=r.episode, ts=r.timestep,
+                                                                                            sps=sps))
+            print("Episode reward: {}".format(r.episode_rewards[-1]))
+            print("Average of last 50 rewards: {}".format(sum(r.episode_rewards[-50:]) / 50))
+            print("Average of last 100 rewards: {}".format(sum(r.episode_rewards[-100:]) / 100))
         return True
 
     print("Starting {agent} for Environment '{env}'".format(agent=agent, env=environment))
-    runner.run(args.episodes, 50, episode_finished=episode_finished)
+    runner.run(args.episodes, 1, episode_finished=episode_finished)
     print("Learning finished. Total episodes: {ep}".format(ep=runner.episode))
     environment.close()
 
