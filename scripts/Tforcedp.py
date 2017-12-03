@@ -38,12 +38,15 @@ class DPEnv(Environment):
         self.path = []
         self.path_relations = []
         sample = task[0].split()
-        localstate = {}
+        localstate = dict(shape=state_dim, type='float')
         localstate[0] = self.entity2id_[sample[0]]
         localstate[1] = self.entity2id_[sample[1]]
         self.state = localstate
         #self.state = [self.entity2id_[sample[0]], self.entity2id_[sample[1]]]
         #self.state = dict(shape=state_dim, type='float')
+
+        self.action =dict(num_actions=action_space, type='int')
+
 
         # Knowledge Graph for path finding
         f = open(dataPath + 'kb_env_rl.txt')
@@ -129,7 +132,7 @@ class DPEnv(Environment):
         #return (None, 1, 0)
 
     def states(self, idx_list=None):
-        localstates = dict()
+        localstates = dict(shape=state_dim, type='float')
         if idx_list != None:
             curr = self.entity2vec[idx_list[0], :]
             targ = self.entity2vec[idx_list[1], :]
@@ -143,11 +146,14 @@ class DPEnv(Environment):
             return self.state
 
     def actions(self, entityID=0):
-        actions = set()
+        tempaction = dict(num_actions=action_space, type='int')
+        localactions = set()
         for line in self.kb:
             triple = line.split()
             e1_idx = self.entity2id_[triple[0]]
             if e1_idx == entityID:
-                actions.add(self.relation2id_[triple[2]])
-        return np.array(list(actions))
-        #return dict(num_actions=action_space, type='int')
+                localactions.add(self.relation2id_[triple[2]])
+        tempaction[0] = np.array(list(localactions))
+        self.action = tempaction
+        #return np.array(list(actions))
+        return self.action
