@@ -37,7 +37,7 @@ class DPEnv(Environment):
 
         self.path = []
         self.path_relations = []
-        self.state = [0,200]
+        self.state = np.zeros([1,200])
 
         # Knowledge Graph for path finding
         f = open(dataPath + 'kb_env_rl.txt')
@@ -45,12 +45,14 @@ class DPEnv(Environment):
         f.close()
 
         self.kb = []
-        if task != None:
-            relation = task.split()[2]
-            for line in kb_all:
-                rel = line.split()[2]
-                if rel != relation and rel != relation + '_inv':
-                    self.kb.append(line)
+        for i in range(len(task)):
+            if task[i] != None:
+                print (i)
+                relation = task[i].split()[2]
+                for line in kb_all:
+                    rel = line.split()[2]
+                    if rel != relation and rel != relation + '_inv':
+                        self.kb.append(line)
 
         self.die = 0  # record how many times does the agent choose an invalid path
 
@@ -87,35 +89,35 @@ class DPEnv(Environment):
         curr_pos = state[0]
         target_pos = state[1]
         chosed_relation = self.relations[action[0]]
-        # choices = []
-        # for line in self.kb:
-        #     triple = line.rsplit()
-        #     e1_idx = self.entity2id_[triple[0]]
-        #
-        #     if curr_pos == e1_idx and triple[2] == chosed_relation and triple[1] in self.entity2id_:
-        #         choices.append(triple)
-        # if len(choices) == 0:
-        #     reward = -1
-        #     self.die += 1
-        #     next_state = state  # stay in the initial state
-        #     next_state[-1] = self.die
-        #     return (next_state, done,reward)
-        # else:  # find a valid step
-        #     path = random.choice(choices)
-        #     self.path.append(path[2] + ' -> ' + path[1])
-        #     self.path_relations.append(path[2])
-        #     # print 'Find a valid step', path
-        #     # print 'Action index', action
-        #     self.die = 0
-        #     new_pos = self.entity2id_[path[1]]
-        #     reward = 0
-        #     new_state = [new_pos, target_pos, self.die]
-        #
-        #     if new_pos == target_pos:
-        #         print 'Find a path:', self.path
-        #         done = 1
-        #         reward = 0
-        #         new_state = None
+        choices = []
+        for line in self.kb:
+            triple = line.rsplit()
+            e1_idx = self.entity2id_[triple[0]]
+
+            if curr_pos == e1_idx and triple[2] == chosed_relation and triple[1] in self.entity2id_:
+                choices.append(triple)
+        if len(choices) == 0:
+            reward = -1
+            self.die += 1
+            next_state = state  # stay in the initial state
+            next_state[-1] = self.die
+            #return (next_state, done,reward)
+        else:  # find a valid step
+            path = random.choice(choices)
+            self.path.append(path[2] + ' -> ' + path[1])
+            self.path_relations.append(path[2])
+            # print 'Find a valid step', path
+            # print 'Action index', action
+            self.die = 0
+            new_pos = self.entity2id_[path[1]]
+            reward = 0
+            new_state = [new_pos, target_pos, self.die]
+
+            if new_pos == target_pos:
+                print 'Find a path:', self.path
+                done = 1
+                reward = 0
+                new_state = None
         #     return (new_state, done, reward)
         return (None, 1, 0)
 
