@@ -37,7 +37,7 @@ class DPEnv(Environment):
 
         self.path = []
         self.path_relations = []
-        self.state = np.zeros([1,200])
+        self.state = dict(shape=state_dim, type='float')
 
         # Knowledge Graph for path finding
         f = open(dataPath + 'kb_env_rl.txt')
@@ -47,13 +47,13 @@ class DPEnv(Environment):
         self.kb = []
         for i in range(len(task)):
             if task[i] != None:
-                print (i)
                 relation = task[i].split()[2]
                 for line in kb_all:
                     rel = line.split()[2]
                     if rel != relation and rel != relation + '_inv':
                         self.kb.append(line)
 
+        print("processing KB")
         self.die = 0  # record how many times does the agent choose an invalid path
 
 
@@ -80,7 +80,7 @@ class DPEnv(Environment):
         This function process the interact from the agent
         state: is [current_position, target_position]
         action: an integer
-        return: ([new_postion, target_position], reward, done)
+        return: ([new_postion, target_position], done. reward)
         '''
         state = self.state
         action = actions
@@ -101,7 +101,7 @@ class DPEnv(Environment):
             self.die += 1
             next_state = state  # stay in the initial state
             next_state[-1] = self.die
-            #return (next_state, done,reward)
+            return (next_state, done,reward)
         else:  # find a valid step
             path = random.choice(choices)
             self.path.append(path[2] + ' -> ' + path[1])
@@ -118,17 +118,21 @@ class DPEnv(Environment):
                 done = 1
                 reward = 0
                 new_state = None
-        #     return (new_state, done, reward)
-        return (None, 1, 0)
+            return (new_state, done, reward)
+        #return (None, 1, 0)
 
     def states(self, idx_list=None):
+        states = dict()
+
         if idx_list != None:
             curr = self.entity2vec[idx_list[0], :]
             targ = self.entity2vec[idx_list[1], :]
+            states[0] = curr
+            states[1] = targ - curr
             # return (np.expand_dims(np.concatenate((curr, targ - curr)),axis=0)
-            return dict(shape=(state_dim), type='float')
+            return states
         else:
-            return dict(shape=(state_dim), type='float')
+            return dict(shape=state_dim, type='float')
 
     def actions(self, entityID=0):
         actions = set()
