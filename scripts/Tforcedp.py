@@ -37,7 +37,9 @@ class DPEnv(Environment):
 
         self.path = []
         self.path_relations = []
-        self.state = dict(shape=state_dim, type='float')
+        sample = task[0].split()
+        self.state = [self.entity2id_[sample[0]], self.entity2id_[sample[1]], 0]
+        #self.state = dict(shape=state_dim, type='float')
 
         # Knowledge Graph for path finding
         f = open(dataPath + 'kb_env_rl.txt')
