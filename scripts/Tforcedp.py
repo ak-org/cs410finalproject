@@ -38,7 +38,11 @@ class DPEnv(Environment):
         self.path = []
         self.path_relations = []
         sample = task[0].split()
-        self.state = [self.entity2id_[sample[0]], self.entity2id_[sample[1]], 0]
+        localstate = {}
+        localstate[0] = self.entity2id_[sample[0]]
+        localstate[1] = self.entity2id_[sample[1]]
+        self.state = localstate
+        #self.state = [self.entity2id_[sample[0]], self.entity2id_[sample[1]]]
         #self.state = dict(shape=state_dim, type='float')
 
         # Knowledge Graph for path finding
@@ -47,7 +51,8 @@ class DPEnv(Environment):
         f.close()
 
         self.kb = []
-        for i in range(len(task)):
+        #for i in range(len(task)):
+        for i in range(1):
             if task[i] != None:
                 relation = task[i].split()[2]
                 for line in kb_all:
@@ -124,17 +129,18 @@ class DPEnv(Environment):
         #return (None, 1, 0)
 
     def states(self, idx_list=None):
-        states = dict()
-
+        localstates = dict()
         if idx_list != None:
             curr = self.entity2vec[idx_list[0], :]
             targ = self.entity2vec[idx_list[1], :]
-            states[0] = curr
-            states[1] = targ - curr
+            localstates[0] = curr
+            localstates[1] = targ - curr
             # return (np.expand_dims(np.concatenate((curr, targ - curr)),axis=0)
-            return states
+            self.state = localstates
+            return self.state
         else:
-            return dict(shape=state_dim, type='float')
+            #self.state = dict(shape=state_dim, type='float')
+            return self.state
 
     def actions(self, entityID=0):
         actions = set()
