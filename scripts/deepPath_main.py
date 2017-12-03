@@ -54,8 +54,6 @@ def main():
     data = f.readlines()
     f.close()
 
-    num_samples = len(data)
-
 
     ## initialize the DeePath Environment class
     environment = DPEnv(graphPath, relationPath, task=data)
@@ -68,7 +66,7 @@ def main():
     step_optimizer = dict(type='adam', learning_rate=1e-3)
 
 
-    agent = VPGAgent(states_spec=environment.state(),
+    agent = VPGAgent(states_spec=environment.states(),
                      actions_spec=environment.actions(),
                      network_spec=network_spec, optimizer=step_optimizer,
                      discount=0.99, batch_size=1000)
@@ -93,7 +91,7 @@ def main():
         return True
 
     print("Starting {agent} for Environment '{env}'".format(agent=agent, env=environment))
-    runner.run(args.episodes, 1, episode_finished=episode_finished)
+    runner.run(1,1,1, episode_finished=episode_finished)
     print("Learning finished. Total episodes: {ep}".format(ep=runner.episode))
     environment.close()
 
