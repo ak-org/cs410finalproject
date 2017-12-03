@@ -37,6 +37,7 @@ class DPEnv(Environment):
 
         self.path = []
         self.path_relations = []
+        self.state = [0,200]
 
         # Knowledge Graph for path finding
         f = open(dataPath + 'kb_env_rl.txt')
@@ -61,66 +62,71 @@ class DPEnv(Environment):
         self.env = None
 
     def reset(self):
-        self.entity2id = {}
-        self.relation2id = {}
-        self.relations = {}
-        self.entity2id_ = {}
-        self.relation2id_ = {}
-        self.relations_ = {}
+        # self.entity2id = {}
+        # self.relation2id = {}
+        # self.relations = {}
+        # self.entity2id_ = {}
+        # self.relation2id_ = {}
+        # self.relations_ = {}
         #self.entity2vec = np.empty()
         #self.relation2vec = np.empty()
-        self.die = 0  # same as in init state
+        # self.die = 0  # same as in init state
+        return np.zeros([1,200])
 
-    def execute(self, state, action):
+    def execute(self, actions):
         '''
         This function process the interact from the agent
         state: is [current_position, target_position]
         action: an integer
         return: ([new_postion, target_position], reward, done)
         '''
-        done = 0  # also referred to as terminal variable in the tensorforce library
+        state = self.state
+        action = actions
+
+        done = 0  # Whether the episode has finished
         curr_pos = state[0]
         target_pos = state[1]
-        chosed_relation = self.relations[action]
-        choices = []
-        for line in self.kb:
-            triple = line.rsplit()
-            e1_idx = self.entity2id_[triple[0]]
-
-            if curr_pos == e1_idx and triple[2] == chosed_relation and triple[1] in self.entity2id_:
-                choices.append(triple)
-        if len(choices) == 0:
-            reward = -1
-            self.die += 1
-            next_state = state  # stay in the initial state
-            next_state[-1] = self.die
-            return (next_state, done, reward)
-        else:  # find a valid step
-            path = random.choice(choices)
-            self.path.append(path[2] + ' -> ' + path[1])
-            self.path_relations.append(path[2])
-            # print 'Find a valid step', path
-            # print 'Action index', action
-            self.die = 0
-            new_pos = self.entity2id_[path[1]]
-            reward = 0
-            new_state = [new_pos, target_pos, self.die]
-
-            if new_pos == target_pos:
-                print 'Find a path:', self.path
-                done = 1
-                reward = 0
-                new_state = None
-            return (new_state, done, reward)
+        chosed_relation = self.relations[action[0]]
+        # choices = []
+        # for line in self.kb:
+        #     triple = line.rsplit()
+        #     e1_idx = self.entity2id_[triple[0]]
+        #
+        #     if curr_pos == e1_idx and triple[2] == chosed_relation and triple[1] in self.entity2id_:
+        #         choices.append(triple)
+        # if len(choices) == 0:
+        #     reward = -1
+        #     self.die += 1
+        #     next_state = state  # stay in the initial state
+        #     next_state[-1] = self.die
+        #     return (next_state, done,reward)
+        # else:  # find a valid step
+        #     path = random.choice(choices)
+        #     self.path.append(path[2] + ' -> ' + path[1])
+        #     self.path_relations.append(path[2])
+        #     # print 'Find a valid step', path
+        #     # print 'Action index', action
+        #     self.die = 0
+        #     new_pos = self.entity2id_[path[1]]
+        #     reward = 0
+        #     new_state = [new_pos, target_pos, self.die]
+        #
+        #     if new_pos == target_pos:
+        #         print 'Find a path:', self.path
+        #         done = 1
+        #         reward = 0
+        #         new_state = None
+        #     return (new_state, done, reward)
+        return (None, 1, 0)
 
     def states(self, idx_list=None):
         if idx_list != None:
             curr = self.entity2vec[idx_list[0], :]
             targ = self.entity2vec[idx_list[1], :]
             # return (np.expand_dims(np.concatenate((curr, targ - curr)),axis=0)
-            return dict(shape=(1, state_dim), type='float')
+            return dict(shape=(state_dim), type='float')
         else:
-            return dict(shape=(), type='float')
+            return dict(shape=(state_dim), type='float')
 
     def actions(self, entityID=0):
         actions = set()
@@ -129,5 +135,5 @@ class DPEnv(Environment):
             e1_idx = self.entity2id_[triple[0]]
             if e1_idx == entityID:
                 actions.add(self.relation2id_[triple[2]])
-                # return np.array(list(actions))
-        return dict(shape=400, type='int', num_actions=action_space)
+        return np.array(list(actions))
+        #return dict(num_actions=action_space, type='int')
