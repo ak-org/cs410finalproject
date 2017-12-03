@@ -94,7 +94,7 @@ class DPEnv(Environment):
             self.die += 1
             next_state = state  # stay in the initial state
             next_state[-1] = self.die
-            return (next_state, reward, done)
+            return (next_state, done, reward)
         else:  # find a valid step
             path = random.choice(choices)
             self.path.append(path[2] + ' -> ' + path[1])
@@ -111,7 +111,7 @@ class DPEnv(Environment):
                 done = 1
                 reward = 0
                 new_state = None
-            return (new_state, reward, done)
+            return (new_state, done, reward)
 
     def states(self, idx_list=None):
         if idx_list != None:
