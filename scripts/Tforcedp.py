@@ -1,18 +1,12 @@
-import numpy as np
-
-from env import Env
 from utils import *
 import numpy as np
 import random
 from tensorforce.environments.environment import Environment
-
-'''
-This file contains wrapper deeppath environment class
-mapped to Tensorforce's Environment class
-It will be called back in the deepPath_main.py file
-
-'''
-
+# ############################################################
+# This file contains wrapper deeppath environment class
+# mapped to Tensorforce's Environment class
+# It will be called back in the deepPath_main.py file
+# ############################################################
 
 class DPEnv(Environment):
     def __init__(self, relationPath, graphPath, task=None):
