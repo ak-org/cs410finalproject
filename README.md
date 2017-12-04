@@ -33,10 +33,15 @@ TensorForce Version 0.3.2
    
    Example
    * ` python deepPath_main.py -a vpg -r concept_athletehomestadium`
-3. The `-a` ( or `--agent`) is an optional parameter. The default value is `vpg`
-4. We have implemented two agents:
-    - `vpg`
-    - `dqn`    
+3. Parameter accepted by the program
+    - `-r`  or `--relation` = relation name (Mandatory)
+    - `-e`  or `--episodes` = Number of episodes, default 500
+    - `-a`  or `--agent` = Agent Name, default `vpg`
+        - We have implemented two agents:
+            - `vpg`
+            - `dqn` 
+    - `-D`  or `--debug` = Debug Log, default `False`
+       
 ## How to run original code 
 1. unzip the data, put the data folder in the code directory
 2. run the following scripts within `scripts/`
