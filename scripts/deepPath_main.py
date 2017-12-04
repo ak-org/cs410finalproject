@@ -9,23 +9,11 @@ from __future__ import print_function
 
 import argparse
 import logging
-import os
-import sys
-import time
-
-import numpy as np
-import tensorforce
-
-from env import Env  # this is the original DeepPath Env class
 from utils import *
-## import necessary tensorflow classes
 
-from tensorforce import TensorForceError
 from tensorforce.agents import VPGAgent
 from tensorforce.agents import DQNAgent
 from tensorforce.execution import Runner
-from tensorforce.agents import agents
-
 from Tforcedp import DPEnv
 
 
@@ -33,6 +21,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-r', '--relation', help="Number of episodes")
     parser.add_argument('-e', '--episodes', type=int, default=500, help="Number of episodes")
+    parser.add_argument('-a', '--agent', type=str, default='vpg', help="VPG or DQN Agent")
     # parser.add_argument('-s', '--save', default = './DPAgents', help="Save agent to this dir (default ./DPAgents)")
     # parser.add_argument('-se', '--save-episodes', type=int, default=100, help="Save agent every x episodes")
     parser.add_argument('-D', '--debug', action='store_true', default=False, help="Show debug outputs")
@@ -64,17 +53,18 @@ def main():
     ]
 
     step_optimizer = dict(type='adam', learning_rate=1e-3)
+    agent = None
 
-
-    agent = VPGAgent(states_spec=dict(shape=state_dim, type='float'),
-                     actions_spec=dict(num_actions=action_space, type='int'),
-                     network_spec=network_spec, optimizer=step_optimizer,
-                     discount=0.99, batch_size=1000)
-
-    # agent = DQNAgent(states_spec=dict(shape=state_dim, type='float'),
-    #                  actions_spec=dict(num_actions=action_space, type='int'),
-    #                  network_spec=network_spec, optimizer=step_optimizer,
-    #                  discount=0.99, batch_size=1000)
+    if args.agent == 'vpg':
+        agent = VPGAgent(states_spec=dict(shape=state_dim, type='float'),
+                         actions_spec=dict(num_actions=action_space, type='int'),
+                         network_spec=network_spec, optimizer=step_optimizer,
+                         discount=0.99, batch_size=1000)
+    elif args.agent == 'dqn':
+        agent = DQNAgent(states_spec=dict(shape=state_dim, type='float'),
+                         actions_spec=dict(num_actions=action_space, type='int'),
+                         network_spec=network_spec, optimizer=step_optimizer,
+                         discount=0.99, batch_size=1000)
 
     runner = Runner(agent=agent, environment=environment)
 
@@ -92,7 +82,7 @@ def main():
 
     print("Starting {agent} for Environment '{env}'".format(agent=agent, env=environment))
     ##TODO Change these hardcoded values
-    runner.run(1, args.episodes, 1, episode_finished=episode_finished)
+    runner.run(episodes = args.episodes, max_episode_timesteps=1, episode_finished=episode_finished)
     print("Learning finished. Total episodes: {ep}".format(ep=runner.episode))
     environment.close()
 
