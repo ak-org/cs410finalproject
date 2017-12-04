@@ -1,18 +1,56 @@
-import numpy as np
-
-from env import Env
 from utils import *
 import numpy as np
 import random
 from tensorforce.environments.environment import Environment
 
-'''
-This file contains wrapper deeppath environment class
-mapped to Tensorforce's Environment class
-It will be called back in the deepPath_main.py file
+###############################################################################################################
+##  In reinforcement learning, there is an agent - who interacts with
+##  a given Environment. Environment accepts current and future step and
+##  returns reward value back to the agent
+##
+##  Env object has the following instance variables
+##          -- entity2id_ a dictionary populated from entity2id.txt file
+##          -- relation2id_ a dictionary populated from relation2id.txt file
+##          -- relations a vector populated from the relations in relation2id.txt file
+##          -- entity2vec populated from entity2vec.bern file
+##          -- relation2vec populated from relation2vec.bern file
+##          -- kb knowledge graph for path finding. This stores all relations from
+##                  kb_env_rl.txt expect one corresponding to input task and its inverse.
+##                  Relation from state to A->B as R and the relation from B->A as R_inverse
+##          -- die number of times the agent chose the wrong path
+##
+##  Env is defined as class containing following methods
+##  -- Initialize init()
+##          Reads the entity2id.txt and relation2id.txt files and populates the 2 dictionaries self.entity2id_
+##          and self.relation2id_variables, stores the relations from relation2id.txt in self.relation,
+##          populates entity2vec and relation2vec from corresponding .bern files. Populates the kb object with
+##          relations (corresponding to input task) from kb_env_rl.txt. Sets variable die to 0.
+##
+##  -- execute()
+##          Called during learning reinforcement phases
+##          state: is [current_position, target_position]
+##		    action: an integer
+##          return: (reward, [new_postion, target_position], done)
+##
+##  -- states()
+##          takes as input current or next_state
+##          returns the current and (target-current) positions as an array
+##
+##  -- actions()
+##          takes the entity id as input
+##          Returns set of valid actions for a given state from self.kb
+##          in form of an array
+##
+##  -- reset()
+##          Called from Runner before begining training
+##
+##  -- close()
+##          Set environment to None
 
-'''
-
+##
+##
+##
+############################################################################################################
 
 class DPEnv(Environment):
     def __init__(self, relationPath, graphPath, task=None):
@@ -37,6 +75,14 @@ class DPEnv(Environment):
 
         self.path = []
         self.path_relations = []
+        sample = task[0].split()
+
+        localstate=[0,0]
+        localstate[0] = self.entity2id_[sample[0]]
+        localstate[1] = self.entity2id_[sample[1]]
+        self.state = localstate
+        self.action =dict(num_actions=action_space, type='int')
+
 
         # Knowledge Graph for path finding
         f = open(dataPath + 'kb_env_rl.txt')
@@ -44,13 +90,15 @@ class DPEnv(Environment):
         f.close()
 
         self.kb = []
-        if task != None:
-            relation = task.split()[2]
-            for line in kb_all:
-                rel = line.split()[2]
-                if rel != relation and rel != relation + '_inv':
-                    self.kb.append(line)
+        for i in range(len(task)):
+            if task[i] != None:
+                relation = task[i].split()[2]
+                for line in kb_all:
+                    rel = line.split()[2]
+                    if rel != relation and rel != relation + '_inv':
+                        self.kb.append(line)
 
+        print("processed KB")
         self.die = 0  # record how many times does the agent choose an invalid path
 
 
@@ -61,40 +109,35 @@ class DPEnv(Environment):
         self.env = None
 
     def reset(self):
-        self.entity2id = {}
-        self.relation2id = {}
-        self.relations = {}
-        self.entity2id_ = {}
-        self.relation2id_ = {}
-        self.relations_ = {}
-        #self.entity2vec = np.empty()
-        #self.relation2vec = np.empty()
-        self.die = 0  # same as in init state
+        state = np.zeros(state_dim)
+        return state
 
-    def execute(self, state, action):
+    def execute(self, actions):
         '''
         This function process the interact from the agent
         state: is [current_position, target_position]
         action: an integer
-        return: ([new_postion, target_position], reward, done)
+        return: ([new_postion, target_position], done. reward)
         '''
+        state = self.state
+
         done = 0  # Whether the episode has finished
         curr_pos = state[0]
         target_pos = state[1]
-        chosed_relation = self.relations[action]
+        chosen_relation = self.relations[actions]
         choices = []
         for line in self.kb:
             triple = line.rsplit()
             e1_idx = self.entity2id_[triple[0]]
 
-            if curr_pos == e1_idx and triple[2] == chosed_relation and triple[1] in self.entity2id_:
+            if curr_pos == e1_idx and triple[2] == chosen_relation and triple[1] in self.entity2id_:
                 choices.append(triple)
         if len(choices) == 0:
             reward = -1
             self.die += 1
             next_state = state  # stay in the initial state
             next_state[-1] = self.die
-            return (next_state, reward, done)
+            return (next_state, done,reward)
         else:  # find a valid step
             path = random.choice(choices)
             self.path.append(path[2] + ' -> ' + path[1])
@@ -104,30 +147,34 @@ class DPEnv(Environment):
             self.die = 0
             new_pos = self.entity2id_[path[1]]
             reward = 0
-            new_state = [new_pos, target_pos, self.die]
+            #new_state = [new_pos, target_pos, self.die]
+            new_state = [new_pos, target_pos]
 
             if new_pos == target_pos:
                 print 'Find a path:', self.path
                 done = 1
                 reward = 0
                 new_state = None
-            return (new_state, reward, done)
+            return (new_state, done, reward)
+
 
     def states(self, idx_list=None):
+        localstate = [0,0]
         if idx_list != None:
             curr = self.entity2vec[idx_list[0], :]
             targ = self.entity2vec[idx_list[1], :]
-            # return (np.expand_dims(np.concatenate((curr, targ - curr)),axis=0)
-            return dict(shape=(1, state_dim), type='float')
-        else:
-            return dict(shape=(), type='float')
+            localstate[0] = curr
+            localstate[1] = targ - curr
+            self.state = localstate
+        return self.state
+
 
     def actions(self, entityID=0):
-        actions = set()
+        localactions = set()
         for line in self.kb:
             triple = line.split()
             e1_idx = self.entity2id_[triple[0]]
             if e1_idx == entityID:
-                actions.add(self.relation2id_[triple[2]])
-                # return np.array(list(actions))
-        return dict(shape=400, type='int', num_actions=action_space)
+                localactions.add(self.relation2id_[triple[2]])
+        self.action = localactions
+        return np.array(list(localactions))
