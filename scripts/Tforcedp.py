@@ -2,11 +2,55 @@ from utils import *
 import numpy as np
 import random
 from tensorforce.environments.environment import Environment
-# ############################################################
-# This file contains wrapper deeppath environment class
-# mapped to Tensorforce's Environment class
-# It will be called back in the deepPath_main.py file
-# ############################################################
+
+###############################################################################################################
+##  In reinforcement learning, there is an agent - who interacts with
+##  a given Environment. Environment accepts current and future step and
+##  returns reward value back to the agent
+##
+##  Env object has the following instance variables
+##          -- entity2id_ a dictionary populated from entity2id.txt file
+##          -- relation2id_ a dictionary populated from relation2id.txt file
+##          -- relations a vector populated from the relations in relation2id.txt file
+##          -- entity2vec populated from entity2vec.bern file
+##          -- relation2vec populated from relation2vec.bern file
+##          -- kb knowledge graph for path finding. This stores all relations from
+##                  kb_env_rl.txt expect one corresponding to input task and its inverse.
+##                  Relation from state to A->B as R and the relation from B->A as R_inverse
+##          -- die number of times the agent chose the wrong path
+##
+##  Env is defined as class containing following methods
+##  -- Initialize init()
+##          Reads the entity2id.txt and relation2id.txt files and populates the 2 dictionaries self.entity2id_
+##          and self.relation2id_variables, stores the relations from relation2id.txt in self.relation,
+##          populates entity2vec and relation2vec from corresponding .bern files. Populates the kb object with
+##          relations (corresponding to input task) from kb_env_rl.txt. Sets variable die to 0.
+##
+##  -- execute()
+##          Called during learning reinforcement phases
+##          state: is [current_position, target_position]
+##		    action: an integer
+##          return: (reward, [new_postion, target_position], done)
+##
+##  -- states()
+##          takes as input current or next_state
+##          returns the current and (target-current) positions as an array
+##
+##  -- actions()
+##          takes the entity id as input
+##          Returns set of valid actions for a given state from self.kb
+##          in form of an array
+##
+##  -- reset()
+##          Called from Runner before begining training
+##
+##  -- close()
+##          Set environment to None
+
+##
+##
+##
+############################################################################################################
 
 class DPEnv(Environment):
     def __init__(self, relationPath, graphPath, task=None):
