@@ -75,7 +75,7 @@ network_spec = [
 ```
 
 ### Agent Creation
-We are using `VPGAgent()` and `DQNAgent()` tensorforce.agents API to create the agents.
+We are using `VPGAgent()` and `DQNAgent()` from `tensorforce.agents` API to create the agents.
 
 ```python
 
@@ -93,6 +93,24 @@ from tensorforce.agents import DQNAgent
                          actions_spec=dict(num_actions=action_space, type='int'),
                          network_spec=network_spec, optimizer=step_optimizer,
                          discount=0.99, batch_size=1000)
+
+```
+
+### Optimization Algorithm
+We have used `adam` is the Optimization Algorithm, however `RMSprop`,`AdaGrad` or other algorithms can also be used.
+
+```python
+step_optimizer = dict(type='adam', learning_rate=1e-3)
+```
+
+### Execution
+`runner` from `tensorforce.execution` API has been used for learning.
+
+```python
+from tensorforce.execution import Runner
+
+runner = Runner(agent=agent, environment=environment)
+runner.run(episodes = args.episodes, max_episode_timesteps=report_episodes, episode_finished=episode_finished)
 
 ```
 
