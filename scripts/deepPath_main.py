@@ -66,25 +66,25 @@ def main():
     step_optimizer = dict(type='adam', learning_rate=1e-3)
 
 
-    agent = VPGAgent(states_spec=environment.states(),
-                     actions_spec=environment.actions(),
+    agent = VPGAgent(states_spec=dict(shape=state_dim, type='float'),
+                     actions_spec=dict(num_actions=action_space, type='int'),
                      network_spec=network_spec, optimizer=step_optimizer,
                      discount=0.99, batch_size=1000)
-    # agent = DQNAgent(states_spec=dict(shape=(1, state_dim), type='float'),
+
+    # agent = DQNAgent(states_spec=dict(shape=state_dim, type='float'),
     #                  actions_spec=dict(num_actions=action_space, type='int'),
     #                  network_spec=network_spec, optimizer=step_optimizer,
     #                  discount=0.99, batch_size=1000)
 
     runner = Runner(agent=agent, environment=environment)
 
-    report_episodes = args.episodes / 500  # default episodes = 500
+    report_episodes = args.episodes / 50  # default episodes = 500
 
     def episode_finished(r):
         if r.episode % report_episodes == 0:
-            sps = r.total_timesteps / (time.time() - r.start_time)
+            #sps = r.total_timesteps / (time.time() - r.start_time)
             print(
-                "Finished episode {ep} after {ts} timesteps. Steps Per Second {sps}".format(ep=r.episode, ts=r.timestep,
-                                                                                            sps=sps))
+                "Finished episode {ep} after {ts} timesteps. Steps Per Second ".format(ep=r.episode, ts=r.timestep))
             print("Episode reward: {}".format(r.episode_rewards[-1]))
             print("Average of last 50 rewards: {}".format(sum(r.episode_rewards[-50:]) / 50))
             print("Average of last 100 rewards: {}".format(sum(r.episode_rewards[-100:]) / 100))
@@ -92,7 +92,7 @@ def main():
 
     print("Starting {agent} for Environment '{env}'".format(agent=agent, env=environment))
     ##TODO Change these hardcoded values
-    runner.run(1,1,1, episode_finished=episode_finished)
+    runner.run(1, arg.episodes, 1, episode_finished=episode_finished)
     print("Learning finished. Total episodes: {ep}".format(ep=runner.episode))
     environment.close()
 
