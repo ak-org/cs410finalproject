@@ -17,14 +17,14 @@ Download the knowledge graph dataset [NELL-995](http://cs.ucsb.edu/~xwhan/datase
 
 # Pre-requisites
 ## For Orginal Code
-Python 2.7.14rc1 
-NumPy Version 1.13.3
-TensorFlow Version 1.4.0
+Python 2.7.14rc1   
+NumPy Version 1.13.3  
+TensorFlow Version 1.4.0  
 
 ## For Our Code
-Python 2.7.14rc1  
-NumPy Version 1.13.3
-TensorForce Version 0.3.2
+Python 2.7.14rc1    
+NumPy Version 1.13.3  
+TensorForce Version 0.3.2  
 
 ## How to run our code
 1. Unzip the data, put the data folder in the top level code directory
