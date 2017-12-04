@@ -103,7 +103,8 @@ class DPEnv(Environment):
             self.die = 0
             new_pos = self.entity2id_[path[1]]
             reward = 0
-            new_state = [new_pos, target_pos, self.die]
+            #new_state = [new_pos, target_pos, self.die]
+            new_state = [new_pos, target_pos]
 
             if new_pos == target_pos:
                 print 'Find a path:', self.path
