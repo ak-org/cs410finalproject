@@ -38,14 +38,11 @@ class DPEnv(Environment):
         self.path = []
         self.path_relations = []
         sample = task[0].split()
-        localstate = dict(shape=state_dim, type='float')
+
+        localstate=[0,0]
         localstate[0] = self.entity2id_[sample[0]]
         localstate[1] = self.entity2id_[sample[1]]
-        #localstate[localstate[0]] = localstate[1]
         self.state = localstate
-        #self.state = [self.entity2id_[sample[0]], self.entity2id_[sample[1]]]
-        #self.state = dict(shape=state_dim, type='float')
-
         self.action =dict(num_actions=action_space, type='int')
 
 
@@ -55,8 +52,7 @@ class DPEnv(Environment):
         f.close()
 
         self.kb = []
-        #for i in range(len(task)):
-        for i in range(1):
+        for i in range(len(task)):
             if task[i] != None:
                 relation = task[i].split()[2]
                 for line in kb_all:
@@ -75,16 +71,8 @@ class DPEnv(Environment):
         self.env = None
 
     def reset(self):
-        # self.entity2id = {}
-        # self.relation2id = {}
-        # self.relations = {}
-        # self.entity2id_ = {}
-        # self.relation2id_ = {}
-        # self.relations_ = {}
-        #self.entity2vec = np.empty()
-        #self.relation2vec = np.empty()
-        # self.die = 0  # same as in init state
-        return np.zeros([1,200])
+        state = np.zeros(state_dim)
+        return state
 
     def execute(self, actions):
         '''
@@ -94,18 +82,17 @@ class DPEnv(Environment):
         return: ([new_postion, target_position], done. reward)
         '''
         state = self.state
-        action = actions
 
         done = 0  # Whether the episode has finished
         curr_pos = state[0]
         target_pos = state[1]
-        chosed_relation = self.relations[action[0]]
+        chosen_relation = self.relations[actions]
         choices = []
         for line in self.kb:
             triple = line.rsplit()
             e1_idx = self.entity2id_[triple[0]]
 
-            if curr_pos == e1_idx and triple[2] == chosed_relation and triple[1] in self.entity2id_:
+            if curr_pos == e1_idx and triple[2] == chosen_relation and triple[1] in self.entity2id_:
                 choices.append(triple)
         if len(choices) == 0:
             reward = -1
@@ -130,32 +117,25 @@ class DPEnv(Environment):
                 reward = 0
                 new_state = None
             return (new_state, done, reward)
-        #return (None, 1, 0)
+
 
     def states(self, idx_list=None):
-        localstates = dict(shape=state_dim, type='float')
+        localstate = [0,0]
         if idx_list != None:
             curr = self.entity2vec[idx_list[0], :]
             targ = self.entity2vec[idx_list[1], :]
-            localstates[0] = curr
-            localstates[1] = targ - curr
-            localstates[curr[0]] = targ[0]
-            # return (np.expand_dims(np.concatenate((curr, targ - curr)),axis=0)
-            self.state = localstates
-            return self.state
-        else:
-            #self.state = dict(shape=state_dim, type='float')
-            return self.state
+            localstate[0] = curr
+            localstate[1] = targ - curr
+            self.state = localstate
+        return self.state
+
 
     def actions(self, entityID=0):
-        tempaction = dict(num_actions=action_space, type='int')
         localactions = set()
         for line in self.kb:
             triple = line.split()
             e1_idx = self.entity2id_[triple[0]]
             if e1_idx == entityID:
                 localactions.add(self.relation2id_[triple[2]])
-        tempaction[0] = np.array(list(localactions))
-        self.action = tempaction
-        #return np.array(list(actions))
-        return self.action
+        self.action = localactions
+        return np.array(list(localactions))
