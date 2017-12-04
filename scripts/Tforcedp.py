@@ -41,6 +41,7 @@ class DPEnv(Environment):
         localstate = dict(shape=state_dim, type='float')
         localstate[0] = self.entity2id_[sample[0]]
         localstate[1] = self.entity2id_[sample[1]]
+        #localstate[localstate[0]] = localstate[1]
         self.state = localstate
         #self.state = [self.entity2id_[sample[0]], self.entity2id_[sample[1]]]
         #self.state = dict(shape=state_dim, type='float')
@@ -63,7 +64,7 @@ class DPEnv(Environment):
                     if rel != relation and rel != relation + '_inv':
                         self.kb.append(line)
 
-        print("processing KB")
+        print("processed KB")
         self.die = 0  # record how many times does the agent choose an invalid path
 
 
@@ -138,6 +139,7 @@ class DPEnv(Environment):
             targ = self.entity2vec[idx_list[1], :]
             localstates[0] = curr
             localstates[1] = targ - curr
+            localstates[curr[0]] = targ[0]
             # return (np.expand_dims(np.concatenate((curr, targ - curr)),axis=0)
             self.state = localstates
             return self.state
