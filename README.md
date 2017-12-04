@@ -5,15 +5,26 @@
 
 
 # Deep Reinforcement Learning for Knowledge Graph Reasoning
-We study the problem of learning to reason in large scale knowledge graphs (KGs). More specifically, we describe a novel reinforcement learning framework for learning multi-hop relational paths: we use a policy-based agent with continuous states based on knowledge graph embeddings, which reasons in a KG vector-space by sampling the most promising relation to extend its path. In contrast to prior work, our approach includes a reward function that takes the **accuravy**, **diversity**, and **efficiency** into consideration. Experimentally, we show that our proposed method outperforms a path-ranking based algorithm and knowledge graph embedding methods on Freebase and Never-Ending Language Learning datasets.
+We study the problem of learning to reason in large scale knowledge graphs (KGs). More specifically, we describe a novel reinforcement learning framework for learning multi-hop relational paths: we use a policy-based agent with continuous states based on knowledge graph embeddings, which reasons in a KG vector-space by sampling the most promising relation to extend its path. In contrast to prior work, our approach includes a reward function that takes the **accuracy**, **diversity**, and **efficiency** into consideration. Experimentally, we show that our proposed method outperforms a path-ranking based algorithm and knowledge graph embedding methods on Freebase and Never-Ending Language Learning datasets.
 
-## original code
+## Original code
 [scripts/ folder](https://github.com/ak-org/cs410finalproject/tree/master/scripts)
-## our code 
+## Our code 
 [tfscripts/ folder](https://github.com/ak-org/cs410finalproject/tree/Tensorforce/tfscripts)
 
 ## Access the dataset
 Download the knowledge graph dataset [NELL-995](http://cs.ucsb.edu/~xwhan/datasets/NELL-995.zip)
+
+# Pre-requisites
+## For Orginal Code
+Python 2.7.14rc1 
+NumPy Version 1.13.3
+TensorFlow Version 1.4.0
+
+## For Our Code
+Python 2.7.14rc1  
+NumPy Version 1.13.3
+TensorForce Version 0.3.2
 
 ## How to run our code
 1. Unzip the data, put the data folder in the top level code directory
