@@ -54,6 +54,50 @@ Download the knowledge graph dataset [NELL-995](http://cs.ucsb.edu/~xwhan/datase
     * `tasks/${relation}/path_to_use.txt`: reasoning paths found the RL agent
     * `tasks/${relation}/path_stats.txt`: path frequency of randomised BFS
 
+## Implementation Details
+
+### Environment
+
+A new environment class was created to interface with tensorforce library.
+
+```python
+environment = DPEnv(graphPath, relationPath, task=data)
+```
+
+### Network Definition
+We have defined Neural Network with 2 hidden layer using tensoforce's API.
+
+```python
+network_spec = [
+        dict(type='dense', size=512, activation='relu'),
+        dict(type='dense', size=1024, activation='relu')
+    ]
+```
+
+### Agent Creation
+We are using `VPGAgent()` and `DQNAgent()` tensorforce.agents API to create the agents.
+
+```python
+
+from tensorforce.agents import VPGAgent
+from tensorforce.agents import DQNAgent
+
+[...]
+
+    agent = VPGAgent(states_spec=dict(shape=state_dim, type='float'),
+                         actions_spec=dict(num_actions=action_space, type='int'),
+                         network_spec=network_spec, optimizer=step_optimizer,
+                         discount=0.99, batch_size=1000)
+  
+    agent = DQNAgent(states_spec=dict(shape=state_dim, type='float'),
+                         actions_spec=dict(num_actions=action_space, type='int'),
+                         network_spec=network_spec, optimizer=step_optimizer,
+                         discount=0.99, batch_size=1000)
+
+```
+
+
+
 ## Cite
 ```
 @InProceedings{wenhan_emnlp2017,
