@@ -35,7 +35,7 @@ from BFS.BFS import BFS
 ####################################################################################################################
 
 # hyperparameters
-state_dim = 200
+state_dim = 2
 action_space = 400
 eps_start = 1
 eps_end = 0.1
