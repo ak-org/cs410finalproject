@@ -21,7 +21,6 @@ from Tforcedp import DPEnv
 ##  -r  or --relation = relation name
 ##  -e  or --episodes = Number of episodes
 ##                      default : 500
-##  -r  or --relation = relation name
 ##  -a  or --agent    = Agent Name
 ##                      default : vpg
 ##                      allowed values : vpg or dqn (lowercase)
