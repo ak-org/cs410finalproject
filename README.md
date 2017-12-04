@@ -8,22 +8,24 @@
 We study the problem of learning to reason in large scale knowledge graphs (KGs). More specifically, we describe a novel reinforcement learning framework for learning multi-hop relational paths: we use a policy-based agent with continuous states based on knowledge graph embeddings, which reasons in a KG vector-space by sampling the most promising relation to extend its path. In contrast to prior work, our approach includes a reward function that takes the **accuravy**, **diversity**, and **efficiency** into consideration. Experimentally, we show that our proposed method outperforms a path-ranking based algorithm and knowledge graph embedding methods on Freebase and Never-Ending Language Learning datasets.
 
 ## original code
-scripts/ folder
-
+[scripts/ folder](https://github.com/ak-org/cs410finalproject/tree/master/scripts)
 ## our code 
-tfscripts/ folder
+[tfscripts/ folder](https://github.com/ak-org/cs410finalproject/tree/Tensorforce/tfscripts)
 
 ## Access the dataset
 Download the knowledge graph dataset [NELL-995](http://cs.ucsb.edu/~xwhan/datasets/NELL-995.zip)
 
 ## How to run our code
-1. unzip the data, put the data folder in the top level code directory
-2. run the following script within `tfscripts/`
-   * ` python deepPath_main.py -r <relation_name>`
+1. Unzip the data, put the data folder in the top level code directory
+2. Run the following script within `tfscripts/`
+   * ` python deepPath_main.py -a <agent_name> -r <relation_name> `
    
    Example
-   * ` python deepPath_main.py -r concept_athletehomestadium`
-   
+   * ` python deepPath_main.py -a vpg -r concept_athletehomestadium`
+3. The `-a` ( or `--agent`) is an optional parameter. The default value is `vpg`
+4. We have implemented two agents:
+    - `vpg`
+    - `dqn`    
 ## How to run original code 
 1. unzip the data, put the data folder in the code directory
 2. run the following scripts within `scripts/`
