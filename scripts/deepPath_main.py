@@ -91,6 +91,7 @@ def main():
         return True
 
     print("Starting {agent} for Environment '{env}'".format(agent=agent, env=environment))
+    ##TODO Change these hardcoded values
     runner.run(1,1,1, episode_finished=episode_finished)
     print("Learning finished. Total episodes: {ep}".format(ep=runner.episode))
     environment.close()
