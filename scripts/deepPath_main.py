@@ -78,7 +78,7 @@ def main():
 
     runner = Runner(agent=agent, environment=environment)
 
-    report_episodes = args.episodes / 50  # default episodes = 500
+    report_episodes = args.episodes / 500  # default episodes = 500
 
     def episode_finished(r):
         if r.episode % report_episodes == 0:
