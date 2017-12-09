@@ -27,7 +27,10 @@ NumPy Version 1.13.3
 TensorForce Version 0.3.2  
 
 ## How to run our code
-1. Unzip the data, put the data folder in the top level code directory
+1. Unzip the NELL-955 dataset in the top level code directory of your project executing following command
+   * `wget http://cs.ucsb.edu/%7Exwhan/datasets/NELL-995.zip`
+   * `unzip NELL-955.zip` 
+   This command will create [NELL-955/folder]. See Format of the dataset section for more details about the dataset.  
 2. Run the following script within `tfscripts/`
    * ` python deepPath_main.py -a <agent_name> -r <relation_name> `
    
@@ -43,7 +46,7 @@ TensorForce Version 0.3.2
     - `-D`  or `--debug` = Debug Log, default `False`
        
 ## How to run original code 
-1. unzip the data, put the data folder in the code directory
+1. unzip the NELL, put the data folder in the code directory
 2. run the following scripts within `scripts/`
     *   `./pathfinder.sh ${relation_name}`  # find the reasoning paths, this is RL training, it might take sometime
     *   `./fact_prediction_eval.py ${relation_name}` # calculate & print the fact prediction results
