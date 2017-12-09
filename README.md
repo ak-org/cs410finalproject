@@ -9,7 +9,7 @@ We study the problem of learning to reason in large scale knowledge graphs (KGs)
 
 ## Original code
 [scripts/ folder](https://github.com/ak-org/cs410finalproject/tree/master/scripts)
-## Our code 
+## Our code
 [tfscripts/ folder](https://github.com/ak-org/cs410finalproject/tree/Tensorforce/tfscripts)
 
 ## Access the dataset
@@ -17,28 +17,28 @@ Download the knowledge graph dataset [NELL-995](http://cs.ucsb.edu/~xwhan/datase
 
 # Pre-requisites
 ## For Orginal Code
-Python 2.7.14rc1   
-NumPy Version 1.13.3  
-TensorFlow Version 1.4.0  
+Python 2.7.14rc1
+NumPy Version 1.13.3
+TensorFlow Version 1.4.0
 
 ## For Our Code
-Python 2.7.14rc1    
-NumPy Version 1.13.3  
-TensorForce Version 0.3.2  
+Python 2.7.14rc1
+NumPy Version 1.13.3
+TensorForce Version 0.3.2
 
 ## How to run our code
 1. Unzip the NELL-995 dataset in the top level code directory of your project executing following command
    * `wget http://cs.ucsb.edu/%7Exwhan/datasets/NELL-995.zip`
-   * `unzip NELL-995.zip` 
-   
-   This command will create [NELL-995/folder]. 
-   
-   See Format of the Dataset section for more details about the dataset. 
-   
-   
+   * `unzip NELL-995.zip`
+
+   This command will create [NELL-995/folder].
+
+   See Format of the Dataset section for more details about the dataset.
+
+
 2. Run the following script within `tfscripts/`
    * ` python deepPath_main.py -a <agent_name> -r <relation_name> `
-   
+
    Example
    * ` python deepPath_main.py -a vpg -r concept_athletehomestadium`
 3. Parameter accepted by the program
@@ -47,10 +47,10 @@ TensorForce Version 0.3.2
     - `-a`  or `--agent` = Agent Name, default `vpg`
         - We have implemented two agents:
             - `vpg`
-            - `dqn` 
+            - `dqn`
     - `-D`  or `--debug` = Debug Log, default `False`
-       
-## How to run original code 
+
+## How to run original code
 1. unzip the NELL, put the data folder in the code directory
 2. run the following scripts within `scripts/`
     *   `./pathfinder.sh ${relation_name}`  # find the reasoning paths, this is RL training, it might take sometime
@@ -58,7 +58,7 @@ TensorForce Version 0.3.2
     *   `./link_prediction_eval.sh ${relation_name}` # calculate & print the link prediction results
 
     Examples (the relation_name can be found in `NELL-995/tasks/`):
-    * `./pathfinder.sh concept_athletehomestadium` 
+    * `./pathfinder.sh concept_athletehomestadium`
     * `./fact_prediction_eval.py concept_athletehomestadium`
     * `./link_prediction_eval.sh concept_athletehomestadium`
 3. Since we already put the reasoning paths in the dataset, you can directly run fact_prediction_eval.py or link_prediction_eval.sh to get the final results for each reasoning task
@@ -112,7 +112,7 @@ from tensorforce.agents import DQNAgent
                          actions_spec=dict(num_actions=action_space, type='int'),
                          network_spec=network_spec, optimizer=step_optimizer,
                          discount=0.99, batch_size=1000)
-  
+
     agent = DQNAgent(states_spec=dict(shape=state_dim, type='float'),
                          actions_spec=dict(num_actions=action_space, type='int'),
                          network_spec=network_spec, optimizer=step_optimizer,
