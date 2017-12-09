@@ -38,7 +38,7 @@ class DPEnv(Environment):
         self.action = dict(num_actions=action_space, type='int')
 
         # Knowledge Graph for path finding
-        f = open(dataPath + 'kb_env_rl_orig.txt')
+        f = open(dataPath + 'kb_env_rl.txt')
         kb_all = f.readlines()
         f.close()
 
