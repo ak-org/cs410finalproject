@@ -1,5 +1,4 @@
-# Final Project for CS410, Fall 2017, 
-# MCS-DS Program at UIUC
+# Final Project for CS410, Fall 2017, MCS-DS Program at UIUC
 ## Team Members : Aruna N, Ashish K, Abhisek J
 ## Project Advisor : Ismini Lourentzou - TA, CS410
 ## Original authors of the code cited below
