@@ -1,6 +1,7 @@
-# Final Project for CS410, MCS-DS Program at UIUC
+# Final Project for CS410, Fall 2017, 
+# MCS-DS Program at UIUC
 ## Team Members : Aruna N, Ashish K, Abhisek J
-## Project Advisor : Ismini 
+## Project Advisor : Ismini Lourentzou - TA, CS410
 ## Original authors of the code cited below
 
 
@@ -30,7 +31,12 @@ TensorForce Version 0.3.2
 1. Unzip the NELL-955 dataset in the top level code directory of your project executing following command
    * `wget http://cs.ucsb.edu/%7Exwhan/datasets/NELL-995.zip`
    * `unzip NELL-955.zip` 
-   This command will create [NELL-955/folder]. See Format of the dataset section for more details about the dataset.  
+   
+   This command will create [NELL-995/folder]. 
+   
+   See Format of the Dataset section for more details about the dataset. 
+   
+   
 2. Run the following script within `tfscripts/`
    * ` python deepPath_main.py -a <agent_name> -r <relation_name> `
    
@@ -58,7 +64,7 @@ TensorForce Version 0.3.2
     * `./link_prediction_eval.sh concept_athletehomestadium`
 3. Since we already put the reasoning paths in the dataset, you can directly run fact_prediction_eval.py or link_prediction_eval.sh to get the final results for each reasoning task
 
-## Format of the dataset
+## Format of the Dataset
 1. `raw.kb`: the raw kb data from NELL system
 2. `kb_env_rl.txt`: we add inverse triples of all triples in `raw.kb`, this file is used as the KG for reasoning
 3. `entity2vec.bern/relation2vec.bern`: transE embeddings to represent out RL states, can be trained using [TransX implementations by thunlp](https://github.com/thunlp/Fast-TransX)
